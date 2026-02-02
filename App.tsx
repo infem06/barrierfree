@@ -10,7 +10,7 @@ import {
   Instagram, Youtube, Facebook, Globe,
   Settings, Save, Palette, Type, Send,
   Download, Eye, CheckCircle2, Search, Maximize2,
-  Languages
+  Languages, Loader2
 } from 'lucide-react';
 import { 
   FESTIVAL_NAME, FESTIVAL_NAME_EN, 
@@ -29,6 +29,7 @@ const App: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isAdminMode, setIsAdminMode] = useState(false);
   const [isSubmitSuccess, setIsSubmitSuccess] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const t = (ko: string, en: string) => (lang === 'KO' ? ko : en);
 
@@ -38,9 +39,32 @@ const App: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsSubmitSuccess(true);
+    setIsSubmitting(true);
+    
+    const formData = new FormData(e.currentTarget);
+    
+    try {
+      const response = await fetch("https://formspree.io/f/xqellgrq", {
+        method: "POST",
+        body: formData,
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+      
+      if (response.ok) {
+        setIsSubmitSuccess(true);
+        (e.target as HTMLFormElement).reset();
+      } else {
+        alert(t("오류가 발생했습니다. 다시 시도해주세요.", "An error occurred. Please try again."));
+      }
+    } catch (error) {
+      alert(t("네트워크 오류가 발생했습니다.", "A network error occurred."));
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const NavItem = ({ id, label, icon: Icon }: { id: string, label: string, icon: any }) => (
@@ -162,7 +186,7 @@ const App: React.FC = () => {
           <AdminDashboard lang={lang} close={() => setIsAdminMode(false)} />
         ) : (
           <>
-            {activeTab === 'home' && <HomeSection lang={lang} onFormSubmit={handleFormSubmit} />}
+            {activeTab === 'home' && <HomeSection lang={lang} onFormSubmit={handleFormSubmit} isSubmitting={isSubmitting} />}
             {activeTab === 'schedule' && <ScheduleSection lang={lang} />}
             {activeTab === 'booth_map' && <BoothMapSection lang={lang} />}
             {activeTab === 'transport' && <TransportSection lang={lang} />}
@@ -211,7 +235,7 @@ const App: React.FC = () => {
   );
 };
 
-const HomeSection: React.FC<{ lang: string, onFormSubmit: (e: React.FormEvent) => void }> = ({ lang, onFormSubmit }) => {
+const HomeSection: React.FC<{ lang: string, onFormSubmit: (e: React.FormEvent<HTMLFormElement>) => void, isSubmitting: boolean }> = ({ lang, onFormSubmit, isSubmitting }) => {
   const t = (ko: string, en: string) => (lang === 'KO' ? ko : en);
   return (
     <div className="animate-in fade-in duration-1000">
@@ -275,19 +299,23 @@ const HomeSection: React.FC<{ lang: string, onFormSubmit: (e: React.FormEvent) =
                   <form className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8" onSubmit={onFormSubmit}>
                     <div className="space-y-2">
                         <label className="text-[11px] font-black text-gray-400 ml-2 uppercase tracking-widest">{t("이름", "Name")}</label>
-                        <input required type="text" placeholder={t("성함을 입력하세요", "Your name")} className="w-full bg-gray-50 border-none rounded-2xl p-5 md:p-7 text-base md:text-lg font-bold focus:ring-4 focus:ring-pink-100 transition-all shadow-inner" />
+                        <input name="name" required type="text" placeholder={t("성함을 입력하세요", "Your name")} className="w-full bg-gray-50 border-none rounded-2xl p-5 md:p-7 text-base md:text-lg font-bold focus:ring-4 focus:ring-pink-100 transition-all shadow-inner" />
                     </div>
                     <div className="space-y-2">
                         <label className="text-[11px] font-black text-gray-400 ml-2 uppercase tracking-widest">{t("연락처", "Phone")}</label>
-                        <input required type="tel" placeholder={t("전화번호를 입력하세요", "Phone number")} className="w-full bg-gray-50 border-none rounded-2xl p-5 md:p-7 text-base md:text-lg font-bold focus:ring-4 focus:ring-pink-100 transition-all shadow-inner" />
+                        <input name="phone" required type="tel" placeholder={t("전화번호를 입력하세요", "Phone number")} className="w-full bg-gray-50 border-none rounded-2xl p-5 md:p-7 text-base md:text-lg font-bold focus:ring-4 focus:ring-pink-100 transition-all shadow-inner" />
                     </div>
                     <div className="md:col-span-2 space-y-2">
                         <label className="text-[11px] font-black text-gray-400 ml-2 uppercase tracking-widest">{t("의견", "Feedback")}</label>
-                        <textarea required rows={4} placeholder={t("축제에 대한 소중한 한마디를 남겨주세요.", "Leave your words here.")} className="w-full bg-gray-50 border-none rounded-[2rem] p-7 md:p-10 text-base md:text-lg font-bold focus:ring-4 focus:ring-pink-100 transition-all resize-none shadow-inner"></textarea>
+                        <textarea name="message" required rows={4} placeholder={t("축제에 대한 소중한 한마디를 남겨주세요.", "Leave your words here.")} className="w-full bg-gray-50 border-none rounded-[2rem] p-7 md:p-10 text-base md:text-lg font-bold focus:ring-4 focus:ring-pink-100 transition-all resize-none shadow-inner"></textarea>
                     </div>
                     <div className="md:col-span-2 mt-4">
-                        <button className="w-full bg-gray-900 text-white py-6 md:py-9 rounded-[2.5rem] text-xl md:text-3xl font-black shadow-2xl hover:bg-[#e91e63] transition-all flex items-center justify-center gap-4">
-                          {t("의견 제출하기", "Submit")} <ArrowRight size={28} />
+                        <button disabled={isSubmitting} className="w-full bg-gray-900 text-white py-6 md:py-9 rounded-[2.5rem] text-xl md:text-3xl font-black shadow-2xl hover:bg-[#e91e63] transition-all flex items-center justify-center gap-4 disabled:bg-gray-400 disabled:cursor-not-allowed">
+                          {isSubmitting ? (
+                            <><Loader2 className="animate-spin" size={28} /> {t("제출 중...", "Submitting...")}</>
+                          ) : (
+                            <>{t("의견 제출하기", "Submit")} <ArrowRight size={28} /></>
+                          )}
                         </button>
                     </div>
                   </form>
