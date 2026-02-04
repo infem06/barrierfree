@@ -34,12 +34,24 @@
             100% { transform: translateY(110vh) rotate(360deg); opacity: 0.3; }
         }
 
-        .boarding-pass-dot {
-            height: 1px;
-            background-image: linear-gradient(to right, #ccc 50%, rgba(255,255,255,0) 0%);
-            background-position: bottom;
-            background-size: 8px 1px;
-            background-repeat: repeat-x;
+        /* Focus styles for accessibility */
+        :focus-visible {
+            outline: 3px solid #ff4d8d;
+            outline-offset: 2px;
+        }
+
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: #ff4d8d;
+            color: white;
+            padding: 8px;
+            z-index: 100;
+            transition: top 0.3s;
+        }
+        .skip-link:focus {
+            top: 0;
         }
     </style>
 <script type="importmap">
@@ -55,13 +67,14 @@
 <link rel="stylesheet" href="/index.css">
 </head>
 <body class="text-gray-900 overflow-x-hidden">
+    <a href="#main-content" class="skip-link">본문 바로가기 (Skip to content)</a>
     <div id="root"></div>
     <script>
-        // Simple petal generator
         function createPetal() {
             const petal = document.createElement('div');
             petal.innerHTML = '🌸';
             petal.className = 'petal';
+            petal.setAttribute('aria-hidden', 'true'); // Screen readers should ignore petals
             petal.style.left = Math.random() * 100 + 'vw';
             petal.style.fontSize = (Math.random() * 10 + 10) + 'px';
             petal.style.opacity = Math.random();
@@ -69,7 +82,7 @@
             document.body.appendChild(petal);
             setTimeout(() => petal.remove(), 10000);
         }
-        setInterval(createPetal, 1000);
+        setInterval(createPetal, 1500);
     </script>
 <script type="module" src="/index.tsx"></script>
 </body>
