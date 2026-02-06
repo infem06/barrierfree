@@ -77,12 +77,12 @@ const App: React.FC = () => {
       aria-controls={`panel-${id}`}
       id={`tab-${id}`}
       onClick={() => { setActiveTab(id); setIsMenuOpen(false); window.scrollTo(0, 0); }}
-      className={`relative flex flex-col items-center justify-center space-y-1 px-4 py-2 transition-all duration-300 ${
-        activeTab === id ? 'text-pink-600 font-bold' : 'text-gray-400 hover:text-pink-400'
+      className={`relative flex flex-col items-center justify-center space-y-1 px-3 sm:px-4 py-2 transition-all duration-300 ${
+        activeTab === id ? 'text-pink-600 font-bold' : 'text-gray-800 hover:text-pink-600'
       }`}
     >
-      <Icon size={24} aria-hidden="true" className={activeTab === id ? 'scale-110' : ''} />
-      <span className="text-[10px] sm:text-xs font-bold tracking-tight whitespace-nowrap">{label}</span>
+      <Icon size={22} aria-hidden="true" className={`sm:w-6 sm:h-6 ${activeTab === id ? 'scale-110' : ''}`} />
+      <span className="text-[9px] sm:text-xs font-black tracking-tight whitespace-nowrap">{label}</span>
       {activeTab === id && (
         <span className="absolute -bottom-1 w-1 h-1 bg-pink-600 rounded-full"></span>
       )}
@@ -133,7 +133,7 @@ const App: React.FC = () => {
                   onClick={() => setLang(l)}
                   aria-pressed={lang === l}
                   className={`px-3 py-1.5 rounded-xl text-xs font-black transition-colors ${
-                    lang === l ? 'bg-pink-50 text-pink-600 border border-pink-100' : 'text-gray-400 hover:text-pink-400'
+                    lang === l ? 'bg-pink-50 text-pink-600 border border-pink-100' : 'text-gray-800 hover:text-pink-600'
                   }`}
                 >
                   {l === 'KO' ? '한글' : l === 'EN' ? 'EN' : '中文'}
@@ -235,12 +235,13 @@ const App: React.FC = () => {
         </div>
       </footer>
 
-      <nav className="xl:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-t border-pink-50 flex justify-around py-3 px-6 z-50 shadow-md" role="tablist">
+      <nav className="xl:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-t border-pink-50 flex justify-around py-3 px-2 z-50 shadow-md" role="tablist">
         <NavItem id="home" label={t("홈", "Home", "主页")} icon={Info} />
         <NavItem id="schedule" label={t("공연", "Show", "表演")} icon={Music} />
         <NavItem id="booth_map" label={t("부스", "Booths", "展位")} icon={MapPin} />
         <NavItem id="transport" label={t("이동", "Move", "交通")} icon={Bus} />
         <NavItem id="parking" label={t("주차", "Park", "停车")} icon={Car} />
+        <NavItem id="contact" label={t("문의", "Contact", "咨询")} icon={Phone} />
       </nav>
     </div>
   );
@@ -249,7 +250,7 @@ const App: React.FC = () => {
 const MobileNavItem = ({ id, label, icon: Icon, active, onClick, setIsMenuOpen }: any) => (
   <button 
     onClick={() => { onClick(id); setIsMenuOpen(false); window.scrollTo(0, 0); }}
-    className={`flex items-center gap-6 p-4 rounded-[1.5rem] transition-all ${active ? 'bg-pink-50 text-pink-600' : 'text-gray-400'}`}
+    className={`flex items-center gap-6 p-4 rounded-[1.5rem] transition-all ${active ? 'bg-pink-50 text-pink-600' : 'text-gray-800'}`}
   >
     <div className={`p-3 rounded-2xl ${active ? 'bg-white shadow-sm' : ''}`}><Icon size={32} /></div>
     <span className="text-2xl font-black tracking-tighter">{label}</span>
@@ -421,7 +422,7 @@ const BoothMapSection: React.FC<{ lang: string }> = ({ lang }) => {
                  role="tab"
                  aria-selected={filter === c.ko}
                  onClick={() => setFilter(c.ko)} 
-                 className={`px-4 py-2 md:px-6 md:py-3 rounded-xl md:rounded-2xl text-[10px] md:text-sm font-black transition-all ${filter === c.ko ? 'bg-gray-900 text-white shadow-lg' : 'bg-white border-2 border-gray-100 text-gray-400 hover:border-pink-200'}`}
+                 className={`px-4 py-2 md:px-6 md:py-3 rounded-xl md:rounded-2xl text-[10px] md:text-sm font-black transition-all ${filter === c.ko ? 'bg-gray-900 text-white shadow-lg' : 'bg-white border-2 border-gray-100 text-gray-800 hover:border-pink-200'}`}
                >
                  {t(c.ko, c.en, c.zh)}
                </button>
@@ -464,18 +465,22 @@ const BoothMapSection: React.FC<{ lang: string }> = ({ lang }) => {
 const ScheduleSection: React.FC<{ lang: string }> = ({ lang }) => {
   const t = (ko: string, en: string, zh: string) => lang === 'EN' ? en : lang === 'ZH' ? zh : ko;
   return (
-    <div className="max-w-3xl mx-auto px-4 md:px-6 py-12 md:py-24 animate-in fade-in duration-500">
-      <h2 className="text-3xl md:text-6xl font-black text-gray-900 mb-8 md:mb-10 text-center italic">{t("공연시간표", "Time Table", "节目时间表")}</h2>
-      <div className="bg-white border-2 border-gray-100 rounded-2xl md:rounded-[2rem] overflow-hidden shadow-sm" role="table">
-        <div className="grid grid-cols-3 bg-gray-900 text-white py-4 px-4 md:px-6 font-black text-[10px] md:text-sm text-center" role="rowgroup">
-           <div className="col-span-1 border-r border-white/10" role="columnheader">{t("시간", "Time", "时间")}</div>
-           <div className="col-span-2" role="columnheader">{t("프로그램명", "Program", "项目名称")}</div>
+    <div className="max-w-4xl mx-auto px-4 md:px-6 py-12 md:py-24 animate-in fade-in duration-500">
+      <h2 className="text-3xl md:text-7xl font-black text-gray-900 mb-8 md:mb-14 text-center italic tracking-tighter">{t("공연시간표", "Time Table", "节目时间表")}</h2>
+      <div className="bg-white border-2 md:border-4 border-gray-100 rounded-3xl md:rounded-[3rem] overflow-hidden shadow-2xl" role="table">
+        <div className="grid grid-cols-[100px_1fr] md:grid-cols-[180px_1fr] bg-gray-900 text-white py-5 px-6 md:px-10 font-black text-sm md:text-2xl" role="rowgroup">
+           <div className="border-r border-white/10 text-center pr-4 md:pr-10" role="columnheader">{t("시간", "Time", "时间")}</div>
+           <div className="pl-6 md:pl-10" role="columnheader">{t("프로그램명", "Program", "项目名称")}</div>
         </div>
-        <div className="divide-y divide-gray-50" role="rowgroup">
+        <div className="divide-y divide-gray-100" role="rowgroup">
           {PERFORMANCES.map((perf, idx) => (
-            <div key={idx} className="grid grid-cols-3 py-4 md:py-5 px-4 md:px-6 items-center text-center hover:bg-pink-50/50 transition-colors" role="row">
-              <div className="col-span-1 font-black text-pink-600 text-xs md:text-xl italic border-r border-gray-100" role="cell">{perf.time.split(' - ')[0]}</div>
-              <div className="col-span-2 text-xs md:text-2xl font-black text-gray-800 tracking-tight break-keep pl-2 md:pl-4" role="cell">{t(perf.title, perf.titleEn, perf.titleZh)}</div>
+            <div key={idx} className="grid grid-cols-[100px_1fr] md:grid-cols-[180px_1fr] py-5 md:py-9 px-6 md:px-10 items-center hover:bg-pink-50/30 transition-colors" role="row">
+              <div className="font-black text-pink-600 text-lg md:text-3xl italic border-r border-gray-100 text-center pr-4 md:pr-10" role="cell">
+                {perf.time.split(' - ')[0]}
+              </div>
+              <div className="text-xl md:text-4xl font-black text-gray-800 tracking-tight break-keep pl-6 md:pl-10 leading-tight" role="cell">
+                {t(perf.title, perf.titleEn, perf.titleZh)}
+              </div>
             </div>
           ))}
         </div>
@@ -489,7 +494,6 @@ const TransportSection: React.FC<{ lang: string }> = ({ lang }) => {
   const t = (ko: string, en: string, zh: string) => lang === 'EN' ? en : lang === 'ZH' ? zh : ko;
 
   useEffect(() => {
-    // 탭 진입 시 잠깐 힌트를 보여줌
     setShowScrollHint(true);
     const timer = setTimeout(() => setShowScrollHint(false), 3500);
     return () => clearTimeout(timer);
@@ -518,7 +522,6 @@ const TransportSection: React.FC<{ lang: string }> = ({ lang }) => {
 
         <div className="bg-white rounded-[2rem] md:rounded-[3rem] p-6 md:p-16 border-2 border-gray-100 shadow-xl overflow-x-auto relative">
           <div className="min-w-[1000px] py-6 md:py-10">
-            {/* Header Stop Names & Location Buttons */}
             <div className="grid grid-cols-[80px_repeat(6,1fr)] mb-16 md:mb-24 gap-4">
               <div className="flex items-center justify-center">
                 <span className="text-pink-600 font-black italic">{t("회차", "Round", "次")}</span>
@@ -532,7 +535,7 @@ const TransportSection: React.FC<{ lang: string }> = ({ lang }) => {
                     href={stop.mapUrl} 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="bg-gray-100 hover:bg-pink-100 text-gray-600 hover:text-pink-600 px-3 py-1.5 rounded-xl text-[10px] font-black transition-all flex items-center gap-1.5 shadow-sm"
+                    className="bg-gray-100 hover:bg-pink-100 text-gray-800 hover:text-pink-600 px-3 py-1.5 rounded-xl text-[10px] font-black transition-all flex items-center gap-1.5 shadow-sm"
                   >
                     <MapPin size={12} /> {t("위치보기", "Location", "查看位置")}
                   </a>
@@ -540,16 +543,13 @@ const TransportSection: React.FC<{ lang: string }> = ({ lang }) => {
               ))}
             </div>
 
-            {/* Time Rows */}
             <div className="space-y-12 md:space-y-20 relative px-4">
               {BUS_SCHEDULE.map((row, rowIdx) => (
                 <div key={rowIdx} className="grid grid-cols-[80px_repeat(6,1fr)] items-center relative z-10">
-                  {/* Round Indicator */}
                   <div className="text-xl md:text-3xl font-black text-[#8b1a1a] italic text-center">
                     {row.round}
                   </div>
                   
-                  {/* Time Dots and Texts */}
                   {row.times.map((time, colIdx) => (
                     <div key={colIdx} className="flex flex-col items-center group relative">
                       <div className="w-4 h-4 md:w-5 md:h-5 bg-black rounded-full mb-3 shadow-md group-hover:scale-125 transition-transform" aria-hidden="true"></div>
@@ -557,7 +557,6 @@ const TransportSection: React.FC<{ lang: string }> = ({ lang }) => {
                     </div>
                   ))}
 
-                  {/* Connecting Line per row */}
                   <div className="absolute top-[8px] md:top-[10px] left-[15%] right-[7%] h-0.5 bg-gray-800/20 -z-10" aria-hidden="true"></div>
                   <div className="absolute top-[8px] md:top-[10px] left-[15%] right-[7%] h-0.5 bg-gradient-to-r from-gray-800 via-gray-800 to-transparent -z-10" aria-hidden="true" style={{ width: '85%' }}></div>
                 </div>
@@ -571,7 +570,7 @@ const TransportSection: React.FC<{ lang: string }> = ({ lang }) => {
         <div className="bg-pink-600 text-white p-2.5 md:p-3 rounded-xl md:rounded-2xl flex-shrink-0" aria-hidden="true"><InfoIcon size={24} className="md:w-7 md:h-7" /></div>
         <div className="space-y-2 md:space-y-4">
           <p className="text-base md:text-2xl font-black text-gray-900 leading-snug break-keep">
-            {t("미관광장의 이동편의 탑승 장소는 정류장에 휠체어 모양이 그려진 곳에서 탑승해야 하며,", "Please board at the designated spot marked with a wheelchair at the Aesthetic Square stop,", "在美观广场站，请在标有轮椅图案的指定地点上车，")}
+            {t("미관광장의 이동편의 탑승 장소는 정류장에 휠체어 모양이 그려진 곳에서 탑승해야 하며,", "Please board at the designated spot marked with a wheelchair at the Aesthetic Square stop,", "在美观广场站，请在标有轮椅图案의 지정地点上车，")}
             <br className="hidden md:block" />
             <span className="text-pink-600"> {t("출발 시간보다 10분 전에 도착해 있어야 합니다.", "and please arrive 10 minutes before the departure time.", "并请在出发时间前10分钟到达。")}</span>
           </p>
