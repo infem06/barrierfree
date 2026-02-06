@@ -49,23 +49,56 @@ export const BOOTHS: Booth[] = [
   { id: 16, name: "페이스 페인팅", nameEn: "Face Painting", nameZh: "面부彩绘", category: '놀이체험', location: "Zone D", isStamping: true },
 ];
 
-export const BUS_ROUTES: BusRoute[] = [
-  {
-    id: 1,
-    name: "A노선 (정왕역 방면)", nameEn: "Route A (Jeongwang)", nameZh: "A路线 (正往站方向)",
-    stops: ["정왕역", "시화병원", "이마트", "축제장"],
-    stopsEn: ["Jeongwang Stn", "Sihwa Hospital", "E-Mart", "Festival Site"],
-    stopsZh: ["正往站", "始华医院", "易买得", "庆典会场"],
-    intervals: "20분 간격", intervalsEn: "Every 20m", intervalsZh: "每20分钟"
+export const BUS_STOPS = [
+  { 
+    name: "미관광장3호\n(행사장)", 
+    nameEn: "Aesthetic Sq 3\n(Festival)", 
+    nameZh: "美观广场3号\n(庆典)", 
+    isPoint: true,
+    mapUrl: "https://map.naver.com/v5/search/시흥시 정왕동 1799-7"
   },
-  {
-    id: 2,
-    name: "B노선 (배곧 방면)", nameEn: "Route B (Baegot)", nameZh: "B路线 (排串方向)",
-    stops: ["한울공원", "시흥아울렛", "배곧공원", "축제장"],
-    stopsEn: ["Hanul Park", "Siheung Outlet", "Baegot Park", "Festival Site"],
-    stopsZh: ["韩蔚公园", "始兴奥特莱斯", "排串公园", "庆典会场"],
-    intervals: "30분 간격", intervalsEn: "Every 30m", intervalsZh: "每30分钟"
-  }
+  { 
+    name: "장현 19단지\n정문\n버스정류장", 
+    nameEn: "Janghyeon 19\nMain Gate\nBus Stop", 
+    nameZh: "长岘19园区\n正门\n巴士站", 
+    isPoint: false,
+    mapUrl: "https://map.naver.com/v5/search/장곡동 879"
+  },
+  { 
+    name: "목감 7단지\n정문\n버스정류장", 
+    nameEn: "Mokgam 7\nMain Gate\nBus Stop", 
+    nameZh: "牧甘7园区\n正门\n巴士站", 
+    isPoint: false,
+    mapUrl: "https://map.naver.com/v5/search/목감7단지정문 버스정류장"
+  },
+  { 
+    name: "능곡초등학교\n맞은편\n(육교 밑)", 
+    nameEn: "Opposite\nNeunggok ES\n(Footbridge)", 
+    nameZh: "陵谷小学\n对面\n(天桥下)", 
+    isPoint: false,
+    mapUrl: "https://map.naver.com/v5/search/능곡초등학교"
+  },
+  { 
+    name: "시흥시청\n정문 맞은편\n버스정류장", 
+    nameEn: "Opposite\nSiheung City Hall\nBus Stop", 
+    nameZh: "始兴市政厅\n正门对面\n巴士站", 
+    isPoint: false,
+    mapUrl: "https://map.naver.com/v5/search/시흥시청정문"
+  },
+  { 
+    name: "미관광장3호\n(행사장)", 
+    nameEn: "Aesthetic Sq 3\n(Festival)", 
+    nameZh: "美观广场3号\n(庆典)", 
+    isPoint: true,
+    mapUrl: "https://map.naver.com/v5/search/시흥시 정왕동 1799-7"
+  },
+];
+
+export const BUS_SCHEDULE = [
+  { round: "1회", times: ["9:30", "9:45", "10:00", "10:20", "10:30", "10:50"] },
+  { round: "2회", times: ["11:30", "11:45", "12:00", "12:20", "12:30", "12:50"] },
+  { round: "3회", times: ["13:30", "13:45", "14:00", "14:20", "14:30", "14:50"] },
+  { round: "4회", times: ["16:00", "16:15", "16:30", "16:50", "17:00", "17:20"] },
 ];
 
 export const CONTACTS: ContactInfo[] = [
